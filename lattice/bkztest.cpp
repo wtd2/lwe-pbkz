@@ -73,6 +73,7 @@ bool pbkz_lwe(char* fn) {
     cout_separate
     cout_subtitle("Find close vector");
     mat_ZZ VV;
+    cout << B << endl;
     VV = ENUMCV(B,target,maxnorm,0.1,enum_mode_all_vectors,0,VL3);
     vec_ZZ candidate;
     int can=-1;    //candidate index
@@ -196,6 +197,7 @@ bool kannan_lwe(char* fn) {
 
     cout_separate cout_subtitle("Find close vector");
     mat_ZZ VV;
+    cout << B << endl;
     VV = ENUMCV(B, target, maxnorm, 0.1, enum_mode_all_vectors, 0, VL3);
     vec_ZZ candidate;
     int can = -1;  // candidate index
