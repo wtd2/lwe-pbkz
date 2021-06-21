@@ -34,6 +34,7 @@
 # pbkz
 .vscode/
 bkzcache/
+sol/*.txt
 main
 verify
 
