@@ -35,6 +35,7 @@
 .vscode/
 bkzcache/
 sol/*.txt
+vrf/*.txt
 main
 verify
 

@@ -64,7 +64,6 @@ bool pbkz_lwe(char* fn) {
     cout_separate
     cout_subtitle("Find basis vectors for A");
     ::BigLLL(A.L,0,0.999,VL1);
-    cout << A.L << endl;
     cout_separate
     cout_subtitle("Apply PBKZ");
     B.resize(m,m);
@@ -170,7 +169,7 @@ bool kannan_lwe(char* fn) {
     cout << "subdim=" << m << endl;
     double sigma = sqrt(lwesigma2);
     cout << "sigma=" << sigma << endl;
-    bkzfloat maxnorm = 2.5 * sqrt(m) * sigma;
+    bkzfloat maxnorm = 1.03 * sqrt(m) * sigma;
     cout << "maxnorm of e=" << maxnorm << endl;
 
     vec_ZZ target;
@@ -189,38 +188,29 @@ bool kannan_lwe(char* fn) {
     cout_subtitle("Find basis vectors for A");
     ::BigLLL(A.L, 0, 0.999, VL1);
     // HNF(A.L, A.L, to_ZZ(lweq));
-    cout << A.L;
     cout_separate
     cout_subtitle("Apply PBKZ");
-    B.resize(m+1, m+1);
-    for (int i = 0; i < m; i++) for(int j = 0; j < m; j++) B.L[i][j] = A.L[i][j];
-    for (int i = 0; i < m; i++) B.L[i][m] = lweb[i];
-    for (int i = 0; i < m; i++) B.L[i][m] = 0;
-    B.L[m][m] = M;
+    B.resize(m, m);
+    for (int i = 0; i < m; i++) B.L[i] = A.L[i];
     ProgressiveBKZ(B, 0, 45, VL1, "ignoreflat");
 
-    cout_separate
-    cout_subtitle("Find close vector");
+    cout_separate cout_subtitle("Find close vector");
     mat_ZZ VV;
-    VV = ENUMCV(B,target,maxnorm,0.1,enum_mode_all_vectors,0,VL3);
-    // VV.SetDims(VVtemp.NumRows(), m);
-    // for (int i = 0; i < VVtemp.NumRows(); i++)
-    //     for(int j = 0; j < m; j++) 
-    //         VV[i][j] = VVtemp[i][j];
+    VV = ENUMCV(B, target, maxnorm, 0.1, enum_mode_all_vectors, 0, VL3);
     vec_ZZ candidate;
-    int can=-1;    //candidate index
-    for (int i=0;i<VV.NumRows();i++) {
+    int can = -1;  // candidate index
+    for (int i = 0; i < VV.NumRows(); i++) {
         candidate = VV[i] - target;
-        cout << "error candidate[" << i+1 << "]: " << candidate << endl;
-        cout << "norm[" << i+1 << "]=" << LengthOf(candidate) << endl;
+        cout << "error candidate[" << i + 1 << "]: " << candidate << endl;
+        cout << "norm[" << i + 1 << "]=" << LengthOf(candidate) << endl;
         if (LengthOf(candidate) < maxnorm) {
             can = i;
             break;
         }
     }
-    if (can==-1) return false;
+    if (can == -1) return false;
 
-     //From error to secret by gaussian elimination
+    // From error to secret by gaussian elimination
     cout_separate
     cout_subtitle("Extract secret vector from error candidate by gaussian elimitation");
     for (int i=0;i<n;i++) {

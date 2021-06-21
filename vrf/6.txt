@@ -1,5 +1,0 @@
-lweA: 140,70
-lweb: 140
-lwes: 0
-matrix mul: dimension mismatch
-Aborted (core dumped)
