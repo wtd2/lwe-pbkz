@@ -170,13 +170,12 @@ bool kannan_lwe(char* fn) {
     cout << "subdim=" << m << endl;
     double sigma = sqrt(lwesigma2);
     cout << "sigma=" << sigma << endl;
-    bkzfloat maxnorm = 1.02 * sqrt(m) * sigma;
+    bkzfloat maxnorm = 1.015 * sqrt(m) * sigma;
     cout << "maxnorm of e=" << maxnorm << endl;
 
     vec_ZZ target;
-    target.SetLength(m+1);
+    target.SetLength(m);
     for (int i = 0; i < m; i++) target[i] = lweb[i];
-    target[m] = M;
 
     LatticeBasis<long double> A, B;
     A.resize(m + n, m);
