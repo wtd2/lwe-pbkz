@@ -43,7 +43,7 @@ bool pbkz_lwe(char* fn) {
     ExtractLWEChallengeFile(lweA,lweb,lwesigma2,lweq,lwefile);
 
     int n = lweA.NumCols();
-    int m = std::min(lweA.NumRows(), long(n * 2.5));
+    int m = lweA.NumRows();
     cout << "subdim=" << m << endl;
     double sigma = sqrt(lwesigma2);
     cout << "sigma=" << sigma << endl;
