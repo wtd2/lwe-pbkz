@@ -47,7 +47,7 @@ bool pbkz_lwe(char* fn) {
     cout << "subdim=" << m << endl;
     double sigma = sqrt(lwesigma2);
     cout << "sigma=" << sigma << endl;
-    bkzfloat maxnorm = 2.5 * sqrt(m) * sigma;
+    bkzfloat maxnorm = 1.7 * sqrt(m) * sigma;
     cout << "maxnorm of e=" << maxnorm << endl;
     
     vec_ZZ target;
@@ -169,7 +169,7 @@ bool kannan_lwe(char* fn) {
     cout << "subdim=" << m << endl;
     double sigma = sqrt(lwesigma2);
     cout << "sigma=" << sigma << endl;
-    bkzfloat maxnorm = 1.05 * sqrt(m) * sigma;
+    bkzfloat maxnorm = 1.02 * sqrt(m) * sigma;
     cout << "maxnorm of e=" << maxnorm << endl;
 
     vec_ZZ target;
