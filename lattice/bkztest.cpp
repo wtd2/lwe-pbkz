@@ -42,7 +42,7 @@ bool kannan_lwe(char* fn, int opt) {
     int n = lweA.NumCols();
     int m = lweA.NumRows();
     if (opt == 2) {
-        m = std::min(m, n * 2);
+        m = std::min(m, int(n * 2.5));
     }
     ZZ M = to_ZZ(1);
     cout << "subdim=" << m << endl;
@@ -89,9 +89,9 @@ bool kannan_lwe(char* fn, int opt) {
     }
     cout_separate cout_subtitle("Find close vector");
     mat_ZZ VV;
-    int coreCount = 96;
+    int coreCount = 64;
     std::ostringstream stringStream;
-    stringStream << "parallel=" << coreCount << " lowerbound=" << minnorm;
+    stringStream << "parallel=" << coreCount;// << " lowerbound=" << minnorm;
     string otheroption = stringStream.str();
     VV = ENUMCV(B, target, maxnorm, 0.1, enum_mode_all_vectors, 0, VL3, otheroption);
     vec_ZZ candidate;
