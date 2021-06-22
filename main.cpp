@@ -4,9 +4,9 @@
 
 int main(int argc, char** argv) {
     if (strcmp(argv[1], "pbkz") == 0) {
-        pbkz_lwe(argv[2]);
+      kannan_lwe(argv[2], 1);
     } else if (strcmp(argv[1], "kannan") == 0) {
-        kannan_lwe(argv[2]);
+        kannan_lwe(argv[2], 2);
     } else if (strcmp(argv[1], "deep") == 0) {
         // deep_lwe(argv[2]);
     }
