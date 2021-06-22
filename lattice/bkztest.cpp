@@ -52,7 +52,7 @@ bool kannan_lwe(char* fn, int opt) {
     if (opt == 1) {
       maxnorm = 1.7 * sqrt(m) * sigma;
     } else {
-      maxnorm = 1.03 * sqrt(m) * sigma;
+      maxnorm = 1.01 * sqrt(m) * sigma;
     }
     minnorm = 0.97 * sqrt(m) * sigma;
     cout << "minnorm of e=" << minnorm << endl;
