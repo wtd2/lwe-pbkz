@@ -8,7 +8,6 @@ void ExtractLWEChallengeFile(mat_ZZ& A,vec_ZZ& b,double& sigma2,int& q,std::stri
     ff.open(filename.c_str(),ios_base::in);
     int n,m;
     ff >> q;
-    //cout << "filename=" << filename.c_str() << endl;
     cout << "q=" << q << endl;
     ff >> sigma2;
     cout << "sigma2=" << sigma2 << endl;
@@ -18,18 +17,17 @@ void ExtractLWEChallengeFile(mat_ZZ& A,vec_ZZ& b,double& sigma2,int& q,std::stri
     cout << "size(A)=" << A.NumRows() << "," << A.NumCols() << endl;
 }
 
-bool kannan_lwe(char* fn, int opt) {
+bool solve_lwe(char* fn, int opt, int core) {
     std::string lwefile, outfile, basfile;
     lwefile = "data/" + string(fn) + ".txt";
     outfile = "sol/" + string(fn) + ".txt";
-    basfile = "basis/" + string(fn) + ".txt";
     if (FileExists(lwefile)==false) {
         cout << "file(" << lwefile << ") does not exist" << endl;
         cout << "skip this test" << endl;
         return true;
     }
     cout_separate
-    cout_subtitle("Kannan-" << opt << " Read file: " + lwefile)
+    cout_subtitle("Option-" << opt << " Read file: " + lwefile)
 
     //Read file
     mat_ZZ lweA;
@@ -63,30 +61,22 @@ bool kannan_lwe(char* fn, int opt) {
     for (int i = 0; i < m; i++) target[i] = lweb[i];
 
     LatticeBasis<long double> A, B;
-    if (FileExists(basfile)==false) {
-      A.resize(m + n, m);
-      for (int i = 0; i < m; i++) A.L[i][i] = lweq;
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) A.L[i+m][j] = lweA[j][i];
-      }
-
-      cout_separate
-      cout_subtitle("Find basis vectors for A");
-      ::BigLLL(A.L, 0, 0.999, VL1);
-      cout_separate
-      cout_subtitle("Apply PBKZ");
-      B.resize(m, m);
-      for (int i = 0; i < m; i++) B.L[i] = A.L[i];
-      ProgressiveBKZ(B, 0, 45, VL1, "ignoreflat");
-      ofstream bff;
-      bff.open(basfile.c_str(), ofstream::out);
-      bff << B.L << endl;
-    } else {
-    //   B.resize(m, m);
-    //   ifstream bff;
-    //   bff.open(basfile.c_str(), ios_base::in);
-    //   bff >> B.L;
+    A.resize(m + n, m);
+    for (int i = 0; i < m; i++) A.L[i][i] = lweq;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) A.L[i+m][j] = lweA[j][i];
     }
+    cout_separate
+    cout_subtitle("Find basis vectors for A");
+    ::BigLLL(A.L, 0, 0.999, VL1);
+    cout_separate
+    cout_subtitle("Apply PBKZ");
+    B.resize(m, m);
+    for (int i = 0; i < m; i++) B.L[i] = A.L[i];
+    ProgressiveBKZ(B, 0, 45, VL1, "ignoreflat");
+    ofstream bff;
+    bff.open(basfile.c_str(), ofstream::out);
+    bff << B.L << endl;
     cout_separate cout_subtitle("Find close vector");
     mat_ZZ VV;
     int coreCount = 64;
